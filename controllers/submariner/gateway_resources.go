@@ -88,7 +88,7 @@ func newGatewayPodTemplate(cr *v1alpha1.Submariner, name string, podSelectorLabe
 		healthCheckMaxPacketLossCount = cr.Spec.ConnectionHealthCheck.MaxPacketLossCount
 	}
 
-	nattPort, _ := strconv.ParseInt(submarinerv1.DefaultNATTDiscoveryPort, 10, 32)
+	//nattPort, _ := strconv.ParseInt(submarinerv1.DefaultNATTDiscoveryPort, 10, 32)
 
 	volumeMounts := []corev1.VolumeMount{
 		{Name: "ipsecd", MountPath: "/etc/ipsec.d", ReadOnly: false},
@@ -170,12 +170,19 @@ func newGatewayPodTemplate(cr *v1alpha1.Submariner, name string, podSelectorLabe
 							ContainerPort: int32(cr.Spec.CeIPSecNATTPort),
 							Protocol:      corev1.ProtocolUDP,
 						},
+						
 						{
-							Name:          nattDiscoveryPortName,
-							HostPort:      int32(nattPort),
-							ContainerPort: int32(nattPort),
+							Name:          nattDiscoveryDynamicPortName,
+							HostPort:      int32(cr.Spec.CeNatDiscovery),
+							ContainerPort: int32(cr.Spec.CeNatDiscovery),
 							Protocol:      corev1.ProtocolUDP,
 						},
+						//{
+						//	Name:          nattDiscoveryPortName,
+						//	HostPort:      int32(nattPort),
+						//	ContainerPort: int32(nattPort),
+						//	Protocol:      corev1.ProtocolUDP,
+						//},
 					},
 					Env: []corev1.EnvVar{
 						{Name: "SUBMARINER_NAMESPACE", Value: cr.Spec.Namespace},
@@ -228,6 +235,11 @@ func newGatewayPodTemplate(cr *v1alpha1.Submariner, name string, podSelectorLabe
 	if cr.Spec.CeIPSecNATTPort != 0 {
 		podTemplate.Spec.Containers[0].Env = append(podTemplate.Spec.Containers[0].Env,
 			corev1.EnvVar{Name: "CE_IPSEC_NATTPORT", Value: strconv.Itoa(cr.Spec.CeIPSecNATTPort)})
+	}
+	
+	if cr.Spec.CeNatDiscovery != 0 {
+		podTemplate.Spec.Containers[0].Env = append(podTemplate.Spec.Containers[0].Env,
+			corev1.EnvVar{Name: "CE_NAT_DISCOVERY", Value: strconv.Itoa(cr.Spec.CeNatDiscovery)})
 	}
 
 	podTemplate.Spec.Containers[0].Env = append(podTemplate.Spec.Containers[0].Env,
