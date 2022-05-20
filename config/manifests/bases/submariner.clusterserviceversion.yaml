@@ -122,6 +122,7 @@ spec:
     * **ceIPSecIKEPort**: The IPsec IKE port (500 usually).
     * **ceIPSecNATTPort**: The IPsec NAT traversal port (4500 usually).
     * **repository**: The container repository to use.
+    * **ceNatDiscovery**: The IPsec NAT Discovery port (4490 usually).
     * **version**: The container version to use.
     * **imageOverrides**: A string map that overrides the images by defining a path for each component.
                           This field is meant to be used by CI, development or testing.
