@@ -35,7 +35,7 @@ const (
 	loadBalancerName      = "submariner-gateway"
 	gatewayStatusLabel    = "gateway.submariner.io/status"
 	encapsPortName        = "cable-encaps"
-	nattDiscoveryPortName = "natt-discovery"
+	nattDiscoveryDynamicPortName  = "natt-discovery"
 )
 
 // nolint:wrapcheck // No need to wrap errors here.
@@ -46,7 +46,7 @@ func (r *Reconciler) reconcileLoadBalancer(
 }
 
 func newLoadBalancerService(instance *v1alpha1.Submariner) *corev1.Service {
-	nattPort, _ := strconv.ParseInt(submv1.DefaultNATTDiscoveryPort, 10, 32)
+	//nattPort, _ := strconv.ParseInt(submv1.DefaultNATTDiscoveryPort, 10, 32)
 
 	return &corev1.Service{
 		ObjectMeta: v1meta.ObjectMeta{
@@ -73,9 +73,9 @@ func newLoadBalancerService(instance *v1alpha1.Submariner) *corev1.Service {
 					Protocol:   corev1.ProtocolUDP,
 				},
 				{
-					Name:       nattDiscoveryPortName,
-					Port:       int32(nattPort),
-					TargetPort: intstr.IntOrString{Type: intstr.Int, IntVal: int32(nattPort)},
+					Name:       nattDiscoveryDynamicPortName,
+					Port:       int32(instance.Spec.CeNatDiscovery),
+					TargetPort: intstr.IntOrString{Type: intstr.Int, IntVal: int32(instance.Spec.CeNatDiscovery)},
 					Protocol:   corev1.ProtocolUDP,
 				},
 			},
