@@ -19,8 +19,6 @@ limitations under the License.
 package submariner
 
 import (
-	"strconv"
-
 	"github.com/go-logr/logr"
 	"github.com/submariner-io/submariner-operator/api/submariner/v1alpha1"
 	"github.com/submariner-io/submariner-operator/controllers/helpers"
