@@ -219,6 +219,7 @@ spec:
         path: ceNatDiscovery
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:number
+        - urn:alm:descriptor:com.tectonic.ui:fieldDependency:natEnabled:true
       - description: The IPsec IKE port (500 usually)
         displayName: IPSec IKE Port
         path: ceIPSecIKEPort
