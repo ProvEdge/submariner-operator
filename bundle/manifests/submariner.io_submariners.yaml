@@ -50,8 +50,6 @@ spec:
                 type: integer
               ceIPSecNATTPort:
                 type: integer
-              ceNatDiscovery:
-                type: integer
               ceIPSecPSK:
                 type: string
               ceIPSecPreferredServer:
